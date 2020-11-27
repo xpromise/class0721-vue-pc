@@ -1,5 +1,9 @@
 <template>
-  <div>header...</div>
+  <div class="header">
+    header...
+    <p>header child~~~</p>
+    
+  </div>
 </template>
 
 <script>
@@ -9,4 +13,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.header {
+  background-color: pink;
+  p {
+    font-size: 30px;
+  }
+}
 </style>
