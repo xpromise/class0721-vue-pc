@@ -28,8 +28,6 @@ export default {
   // watch: {
   //   $route: {
   //     handler(newVal) {
-  //       console.log(newVal);
-
   //       this.isFooterShow =
   //         newVal.path !== "/login" && newVal.path !== "/register";
   //     },

@@ -93,6 +93,9 @@ export default {
               query: {} 查询字符串参数
             }
               命名路由params可选
+
+        编程式导航重复跳转到同一个路径会报错：
+          Uncaught (in promise) NavigationDuplicated: Avoided redundant navigation to current location: "/search".    
       */
       // 获取搜索的数据
       const { searchText } = this;
@@ -112,7 +115,21 @@ export default {
           searchText,
         };
       }
-      this.$router.push(location);
+      this.$router.push(
+        location,
+        // (res) => {
+        //   console.log("成功", res);
+        // },
+        // (err) => {
+        //   console.log(err);
+        // }
+      );
+      // .then((res) => {
+      //   console.log("成功", res);
+      // })
+      // .catch((err) => {
+      //   console.log("err", err);
+      // });
     },
   },
 };
