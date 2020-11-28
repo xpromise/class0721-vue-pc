@@ -36,6 +36,7 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
+            v-model="searchText"
           />
           <button
             @click="search"
@@ -53,10 +54,25 @@
 <script>
 export default {
   name: "Header",
+  data() {
+    return {
+      // 搜索的内容
+      searchText: "",
+    };
+  },
   methods: {
+    /**
+     * 搜索功能函数
+     */
     search() {
+      // 获取搜索的数据
+      const { searchText } = this;
+      // 判断是否要添加params参数
+      const params = searchText ? `/${searchText}` : "";
+      // 生成跳转的路径
+      const location = "/search" + params;
       // 编程式导航：原因将来要做搜索功能（要发送请求）
-      this.$router.push("/search");
+      this.$router.push(location);
     },
   },
 };

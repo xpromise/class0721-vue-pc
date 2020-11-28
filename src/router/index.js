@@ -24,7 +24,8 @@ export default new VueRouter({
       component: Register,
     },
     {
-      path: "/search",
+      // ?: 代表 params 参数是可选的
+      path: "/search/:searchText?",
       component: Search,
     },
   ],
