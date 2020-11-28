@@ -1,7 +1,7 @@
 <template>
   <div>
     Login...
-    <button @click="login">登录</button>
+    <el-button type="primary" @click="login">登录</el-button>
   </div>
 </template>
 
@@ -11,6 +11,7 @@ import { reqLogin } from "@api/user";
 export default {
   name: "Login",
   methods: {
+    // 测试登录
     login() {
       reqLogin("13700000000", "11111111")
         .then((res) => {

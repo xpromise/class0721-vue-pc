@@ -7,6 +7,8 @@ import router from "./router";
 // 引入公共资源
 import "./styles/reset.css";
 
+import './plugins/element.js'
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

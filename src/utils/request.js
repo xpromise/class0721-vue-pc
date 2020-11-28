@@ -7,6 +7,10 @@
       失败：返回失败的Promise，值为失败的原因
 */
 import axios from "axios";
+import { Message } from "element-ui";
+// 引入进度条插件
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 const instance = axios.create({
   //  / 就是当前服务器地址
@@ -21,6 +25,9 @@ instance.interceptors.request.use(
   (config) => {
     // config 请求的配置对象
     // 将来发送请求（请求地址，请求参数，请求方式等）都会在config中找
+
+    // 开始进度条
+    NProgress.start();
 
     // 修改config，用来添加公共的请求参数
     // if (token) {
@@ -64,7 +71,8 @@ instance.interceptors.response.use(
           } 
         }
     */
-
+    // 进度条结束
+    NProgress.done();
     // console.log("response", response);
     // 判断响应的code是否是200
     if (response.data.code === 200) {
@@ -72,15 +80,20 @@ instance.interceptors.response.use(
       return response.data.data;
     }
 
+    const { message } = response.data;
+    // 提示错误
+    Message.error(message);
     // 功能失败 --> 返回失败的Promise
-    return Promise.reject(response.data.message);
+    return Promise.reject(message);
   },
   // 响应失败：当响应状态码不是 2xx
   (error) => {
     // console.dir(error);
-
+    // 进度条结束
+    NProgress.done();
     const message = error.message || "网络错误";
-
+    // 提示错误
+    Message.error(message);
     return Promise.reject(message);
   }
 );
