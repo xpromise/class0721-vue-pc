@@ -25,7 +25,7 @@ import Like from "./Like/Like";
 import ListContainer from "./ListContainer/ListContainer";
 import Rank from "./Rank/Rank";
 import TodayRecommend from "./TodayRecommend/TodayRecommend";
-import TypeNav from "./TypeNav";
+import TypeNav from "@comps/TypeNav";
 
 export default {
   name: "Home",
