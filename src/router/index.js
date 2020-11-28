@@ -18,13 +18,22 @@ export default new VueRouter({
     {
       path: "/login",
       component: Login,
+      // 当组件加载显示时，meta中的参数会传到$route中
+      // 当组件不加载显示时，meta中的参数不会传
+      meta: {
+        isFooterHide: true,
+      },
     },
     {
       path: "/register",
       component: Register,
+      meta: {
+        isFooterHide: true,
+      },
     },
     {
       // ?: 代表 params 参数是可选的
+      name: "search",
       path: "/search/:searchText?",
       component: Search,
     },
