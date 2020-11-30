@@ -55,19 +55,41 @@
 </template>
 
 <script>
-import { reqGetBaseCategoryList } from "@api/home";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "TypeNav",
-  data() {
-    return {
-      // 初始化响应式数据
-      categoryList: [],
-    };
+  // data() {
+  //   return {
+  //     // 初始化响应式数据
+  //     categoryList: [],
+  //   };
+  // },
+  computed: {
+    // 当使用vuex模块化，这种方式就不行了
+    // ...mapState(["testCount", "categoryList"]),
+    // ...mapState(["testCount", "home.categoryList"]),
+    // ...mapState(["testCount", "home"]), // 这种方式可以，需要使用 this.home.categoryList。太麻烦
+
+    ...mapState({
+      // 对象中的数据，就会传递给组件
+
+      // categoryList就是组件能接受到的数据
+      // 它的值是一个函数，函数内部会调用得到值
+      // 调用时会将所有vuex数据传递进去，就是state
+      categoryList: (state) => state.home.categoryList,
+      // testCount: (state) => state.testCount,
+    }),
   },
-  async mounted() {
-    const result = await reqGetBaseCategoryList();
-    this.categoryList = result.slice(0, 16);
+  methods: {
+    // 函数直接写
+    // 注意：将来action函数名称和mutation函数名称不要重复
+    ...mapActions(["getCategoryList"]),
+  },
+  mounted() {
+    // console.log(this);
+    // 调用vuex的action函数
+    this.getCategoryList();
   },
 };
 </script>
