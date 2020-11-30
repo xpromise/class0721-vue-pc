@@ -107,16 +107,24 @@ export default {
         //   searchText: searchText,
         // },
         // query: {
-        //   name: "jack",
         // },
       };
+
       if (searchText) {
         location.params = {
           searchText,
         };
       }
+
+      // 添加query参数
+      const { categoryName } = this.$route.query;
+
+      if (categoryName) {
+        location.query = this.$route.query;
+      }
+
       this.$router.push(
-        location,
+        location
         // (res) => {
         //   console.log("成功", res);
         // },
