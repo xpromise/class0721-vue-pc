@@ -102,7 +102,7 @@ computed: {
         当客户端访问mock服务器的指定路由时，返回一个模拟数据回去
 
 ## 理解 JSON 数据结构
-    
+
     a.结构: 名称, 数据类型  ==> 用于读取数据值
     b.value: 会显示到界面上
     c.真实接口返回的数据与mock的数据的关系: value可以变, 但结构不能变
@@ -116,13 +116,13 @@ computed: {
      mockServer中: 通过Mock.mock()来定义mock接口
      main.js中: 引入mockServer
      必须写ajax请求代码访问:
-    	api/mockAjax中: 封装针对mock接口的axios封装封装
-    	api/index中: 定义对应的接口请求函数
+    	utils/mockRequest中: 封装针对mock接口的axios封装封装
+    	utils/request中: 定义对应的接口请求函数
         组件中: 调用接口请求函数
     注意: 浏览器并不会发对mock接口的请求
 
 ## 使用 vuex 管理 mock 接口返回的 banners 与 floors 数据
 
     state: banners / floors
-    mutation: RECEIVE_BANNERS() / RECEIVE_FLOORS()
+    mutation: GET_BANNERS() / GET_FLOORS()
     action: getBanners() / getFloors()
