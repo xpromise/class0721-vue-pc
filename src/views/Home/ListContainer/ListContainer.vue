@@ -3,23 +3,7 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container">
-          <div class="swiper-wrapper">
-            <div
-              class="swiper-slide"
-              v-for="banner in banners"
-              :key="banner.id"
-            >
-              <img :src="banner.imgUrl" />
-            </div>
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <Carousel :carouselList="banners" />
       </div>
       <div class="right">
         <div class="news">
@@ -96,14 +80,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-// 1. 引入swiper两个文件
-import Swiper, { Navigation, Pagination } from "swiper";
-import "swiper/swiper-bundle.min.css";
-
-// https://swiperjs.com/get-started/
-// Swiper6默认只有核心轮播图功能，其他功能没有
-// 要使用其他功能，需要先加载
-Swiper.use([Navigation, Pagination]);
+import Carousel from "@comps/Carousel";
 
 export default {
   name: "ListContainer",
@@ -139,27 +116,34 @@ export default {
           将其中的回调函数放到更新完成DOM后在触发
           其中的回调函数可以近似看做实在updated中执行（但是只会执行一次）
       8. 注意：Swiper6需要手动引入其他插件才可以使用
-      
+
       调试代码：打印调试
     */
 
     // 等当前用户界面更新完毕，在触发其中的回调函数
-    this.$nextTick(() => {
-      new Swiper(".swiper-container", {
-        loop: true, // 循环模式选项
+    // this.$nextTick(() => {
+    //   new Swiper(".swiper-container", {
+    //     loop: true, // 循环模式选项
 
-        // 如果需要分页器
-        pagination: {
-          el: ".swiper-pagination",
-        },
+    //     autoplay: {
+    //       // 自动轮播
+    //       delay: 2000, // 轮播间隔时间
+    //       disableOnInteraction: false, // 当用户点击下一页时，仍会开启自动轮播
+    //     },
 
-        // 如果需要前进后退按钮
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-      });
-    });
+    //     // 如果需要分页器
+    //     pagination: {
+    //       el: ".swiper-pagination",
+    //       clickable: true,
+    //     },
+
+    //     // 如果需要前进后退按钮
+    //     navigation: {
+    //       nextEl: ".swiper-button-next",
+    //       prevEl: ".swiper-button-prev",
+    //     },
+    //   });
+    // });
 
     // new Swiper的前提：必须先生成相应的DOM结构
     // setTimeout(() => {
@@ -178,6 +162,9 @@ export default {
     //     },
     //   });
     // }, 0);
+  },
+  components: {
+    Carousel,
   },
 };
 </script>
