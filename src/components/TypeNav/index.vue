@@ -155,6 +155,7 @@ export default {
     ...mapActions(["getCategoryList"]),
     // 跳转到search
     goSearch(e) {
+      // 注意：自定义属性都是小写
       const { categoryname, categoryid, categorytype } = e.target.dataset; // 元素自定义属性对象
 
       // 需求：如何获取需要的参数？
@@ -168,7 +169,7 @@ export default {
       this.isSearchShow = false;
 
       const location = {
-        name: "search",
+        name: "search", // 必须使用命名路由（因为要使用params参数）
         query: {
           categoryName: categoryname,
           [`category${categorytype}Id`]: categoryid,
