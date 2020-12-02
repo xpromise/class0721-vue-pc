@@ -84,13 +84,13 @@ import Carousel from "@comps/Carousel";
 
 export default {
   name: "ListContainer",
+  methods: {
+    ...mapActions(["getBanners"]),
+  },
   computed: {
     ...mapState({
       banners: (state) => state.home.banners,
     }),
-  },
-  methods: {
-    ...mapActions(["getBanners"]),
   },
   async mounted() {
     // await就会等待vuex将数据更新完毕，再执行后面代码
