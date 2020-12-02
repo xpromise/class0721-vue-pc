@@ -54,8 +54,8 @@
                     >综合<i
                       :class="{
                         iconfont: true,
-                        'icon-direction-down': isAllDown,
-                        'icon-direction-up': !isAllDown,
+                        'icon-direction-down': isAllDown, // 降序图标
+                        'icon-direction-up': !isAllDown, // 升序图标
                       }"
                     ></i
                   ></a>
@@ -141,35 +141,24 @@
             </ul>
           </div>
           <!-- 分页器 -->
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="options.pageNo"
+            :pager-count="7"
+            :page-sizes="[5, 10, 15, 20]"
+            :page-size="5"
+            background
+            layout="
+              prev,
+              pager, 
+              next, 
+              total, 
+              sizes, 
+              jumper"
+            :total="total"
+          >
+          </el-pagination>
         </div>
       </div>
     </div>
@@ -222,12 +211,12 @@ export default {
     //   attrsList: (state) => state.search.productList.attrsList,
     //   goodsList: (state) => state.search.productList.goodsList,
     // }),
-    ...mapGetters(["goodsList"]),
+    ...mapGetters(["goodsList", "total"]),
   },
   methods: {
     ...mapActions(["getProductList"]),
     // 更新商品列表
-    updateProductList() {
+    updateProductList(pageNo = 1) {
       const { searchText: keyword } = this.$route.params;
       const {
         categoryName,
@@ -243,6 +232,7 @@ export default {
         category1Id,
         category2Id,
         category3Id,
+        pageNo,
       };
 
       this.options = options;
@@ -309,11 +299,31 @@ export default {
         } else {
           this.isPriceDown = !this.isPriceDown;
         }
+        orderType = orderType === "desc" ? "asc" : "desc";
       } else {
-        this.isPriceDown = false;
+        // 点击一次, 如果点击的是价格，应该初始化为升序
+        if (order === "1") {
+          orderType = this.isAllDown ? "desc" : "asc";
+        } else {
+          this.isPriceDown = false;
+          orderType = "asc";
+        }
       }
 
       this.options.order = `${order}:${orderType}`;
+      this.updateProductList();
+    },
+    // 当每页条数发生变化触发
+    handleSizeChange(pageSize) {
+      // console.log("pageSize", pageSize);
+      this.options.pageSize = pageSize;
+      this.updateProductList();
+    },
+    // 当页码发生变化触发
+    handleCurrentChange(pageNo) {
+      // console.log("pageNo", pageNo);
+      // this.options.pageNo = pageNo;
+      this.updateProductList(pageNo);
     },
   },
   mounted() {
