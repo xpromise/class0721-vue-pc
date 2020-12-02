@@ -13,6 +13,7 @@ import "./mock/mockServer";
 
 // 引入公共资源
 import "./styles/reset.css";
+import "./styles/iconfont.css";
 
 Vue.config.productionTip = false;
 
