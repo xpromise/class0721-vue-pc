@@ -185,7 +185,14 @@ export default {
         };
       }
 
-      this.$router.push(location);
+      // this.$route.path 路径路由
+      // this.$route.name 命名路由名称
+      if (this.$route.name === "search") {
+        this.$router.replace(location);
+      } else {
+        this.$router.push(location);
+      }
+      // this.$router.replace(location);
     },
   },
   mounted() {

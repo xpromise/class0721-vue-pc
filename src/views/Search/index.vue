@@ -13,10 +13,16 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-show="options.keyword" @click="delKeyword">
+              {{ options.keyword }}<i>×</i>
+            </li>
+            <li
+              class="with-x"
+              v-show="options.categoryName"
+              @click="delCategory"
+            >
+              {{ options.categoryName }}<i>×</i>
+            </li>
           </ul>
         </div>
 
@@ -193,7 +199,35 @@ export default {
         category3Id,
       };
 
+      this.options = options;
+
       this.getProductList(options);
+    },
+    // 删除关键字
+    delKeyword() {
+      // 清除options
+      this.options.keyword = "";
+      // 清空header组件的keyword
+      this.$bus.$emit("clearKeyword");
+      // 清除路径params参数
+      // $route上面的属性是只读属性，不能修改
+      // this.$route.params = {};
+      this.$router.replace({
+        name: "search",
+        query: this.$route.query,
+      });
+    },
+    // 删除分类
+    delCategory() {
+      this.options.categoryName = "";
+      this.options.category1Id = "";
+      this.options.category2Id = "";
+      this.options.category3Id = "";
+
+      this.$router.replace({
+        name: "search",
+        params: this.$route.params,
+      });
     },
   },
   mounted() {

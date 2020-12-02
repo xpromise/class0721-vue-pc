@@ -123,15 +123,27 @@ export default {
         location.query = this.$route.query;
       }
 
-      this.$router.push(
-        location
-        // (res) => {
-        //   console.log("成功", res);
-        // },
-        // (err) => {
-        //   console.log(err);
-        // }
-      );
+      // if (this.$route.path.indexOf('/search') > -1) {
+      // if (this.$route.path.includes("/search")) {
+      // if (this.$route.path.startsWith("/search")) {
+      // if (/^\/search/.test(this.$route.path)) {
+      // this.$route.path 路径路由
+      // this.$route.name 命名路由名称
+      if (this.$route.name === 'search') {
+        this.$router.replace(location);
+      } else {
+        this.$router.push(location);
+      }
+
+      // this.$router.replace(
+      //   location
+      //   // (res) => {
+      //   //   console.log("成功", res);
+      //   // },
+      //   // (err) => {
+      //   //   console.log(err);
+      //   // }
+      // );
       // .then((res) => {
       //   console.log("成功", res);
       // })
@@ -139,6 +151,12 @@ export default {
       //   console.log("err", err);
       // });
     },
+  },
+  mounted() {
+    this.$bus.$on("clearKeyword", () => {
+      // 清空searchText
+      this.searchText = "";
+    });
   },
 };
 </script>
