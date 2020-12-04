@@ -46,10 +46,7 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li
-                  :class="{ active: options.order.indexOf('1') > -1 }"
-                  @click="setOrder('1')"
-                >
+                <li :class="{ active: isOrder('1') }" @click="setOrder('1')">
                   <a
                     >综合<i
                       :class="{
@@ -69,10 +66,7 @@
                 <li>
                   <a>评价</a>
                 </li>
-                <li
-                  :class="{ active: options.order.indexOf('2') > -1 }"
-                  @click="setOrder('2')"
-                >
+                <li :class="{ active: isOrder('2') }" @click="setOrder('2')">
                   <a>
                     价格
                     <span>
@@ -80,16 +74,14 @@
                         :class="{
                           iconfont: true,
                           'icon-arrow-up-filling': true,
-                          deactive:
-                            options.order.indexOf('2') > -1 && isPriceDown,
+                          deactive: isOrder('2') && isPriceDown,
                         }"
                       ></i>
                       <i
                         :class="{
                           iconfont: true,
                           'icon-arrow-down-filling': true,
-                          deactive:
-                            options.order.indexOf('2') > -1 && !isPriceDown,
+                          deactive: isOrder('2') && !isPriceDown,
                         }"
                       ></i>
                     </span>
@@ -267,6 +259,7 @@ export default {
     },
     // 添加品牌并更新数据
     addTrademark(trademark) {
+      if (this.options.trademark) return;
       this.options.trademark = trademark;
       this.updateProductList();
     },
@@ -277,6 +270,8 @@ export default {
     },
     // 添加品牌属性并更新数据
     addProp(prop) {
+      // 判断属性是否存在
+      if (this.options.props.indexOf(prop) > -1) return;
       this.options.props.push(prop);
       this.updateProductList();
     },
@@ -324,6 +319,10 @@ export default {
       // console.log("pageNo", pageNo);
       // this.options.pageNo = pageNo;
       this.updateProductList(pageNo);
+    },
+    // 判断order以 xxx 开头
+    isOrder(order) {
+      return this.options.order.indexOf(order) > -1;
     },
   },
   mounted() {
