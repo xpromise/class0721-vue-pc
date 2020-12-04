@@ -103,18 +103,23 @@ export default {
       // [1] --> 如果start大于总页数，不显示
 
       if (myCurrentPage >= totalPages - halfCount) {
+        // 1 ... 5 6 7 8 [9] 10
         start = totalPages - count;
       } else {
+        // 正常情况
         start = myCurrentPage - halfCount;
       }
 
       if (start <= 1) {
+        // 1 [2] 3 4 5 6 ...10
         start = 2;
       }
 
+      // 正常情况
       end = start + count - 1;
 
       if (end >= totalPages) {
+        // 1 [2] 3
         end = totalPages - 1;
       }
 
