@@ -1,13 +1,19 @@
 <template>
   <div class="pagination">
     <button>上一页</button>
-    <button class="active">1</button>
-    <button>2</button>
-    <button>3</button>
-    <button>4</button>
-    <button>5</button>
+    <button>1</button>
+    <button v-show="startEnd.start > 2">...</button>
+    <button
+      v-for="item in mapBtnsCount"
+      :key="item"
+      @click="setCurrentPage(startEnd.start + item - 1)"
+    >
+      {{ startEnd.start + item - 1 }}
+    </button>
+    <button v-show="startEnd.end < totalPages - 1">...</button>
+    <button v-show="totalPages > 1">{{ totalPages }}</button>
     <button>下一页</button>
-    <button>总数：xxx</button>
+    <button>总数：{{ total }}</button>
   </div>
 </template>
 
@@ -40,7 +46,8 @@ export default {
     // 总数
     total: {
       type: Number,
-      required: true,
+      // required: true,
+      default: 0,
     },
   },
   data() {
@@ -116,6 +123,18 @@ export default {
         start,
         end,
       };
+    },
+
+    // 需要遍历的按钮数量
+    mapBtnsCount() {
+      const { start, end } = this.startEnd;
+      const count = end - start + 1;
+      return count >= 1 ? count : 0;
+    },
+  },
+  methods: {
+    setCurrentPage(currentPage) {
+      this.myCurrentPage = currentPage;
     },
   },
 };
