@@ -21,7 +21,6 @@
 <script>
 // 1. 引入swiper两个文件
 import Swiper, { Navigation, Pagination, Autoplay } from "swiper";
-import "swiper/swiper-bundle.min.css";
 
 // https://swiperjs.com/get-started/
 // Swiper6默认只有核心轮播图功能，其他功能没有
@@ -45,7 +44,7 @@ export default {
 
       // 确保：swiper不能new多次
       if (this.swiper) return;
-      
+
       this.$nextTick(() => {
         this.initSwiper();
       });

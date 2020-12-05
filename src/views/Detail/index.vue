@@ -16,9 +16,21 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom
+            :imgUrl="
+              skuInfo.skuImageList[currentImgIndex] &&
+              skuInfo.skuImageList[currentImgIndex].imgUrl
+            "
+            :bigImgUrl="
+              skuInfo.skuImageList[currentImgIndex] &&
+              skuInfo.skuImageList[currentImgIndex].imgUrl
+            "
+          />
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList
+            :skuImageList="skuInfo.skuImageList"
+            :updateCurrentImgIndex="updateCurrentImgIndex"
+          />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
@@ -341,11 +353,19 @@ import Zoom from "./Zoom/Zoom";
 
 export default {
   name: "Detail",
+  data() {
+    return {
+      currentImgIndex: 0, // 当前选中图片的下标
+    };
+  },
   computed: {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
   },
   methods: {
     ...mapActions(["getProductDetail"]),
+    updateCurrentImgIndex(index) {
+      this.currentImgIndex = index;
+    },
   },
   mounted() {
     this.getProductDetail(this.$route.params.id);

@@ -79,7 +79,7 @@ export default {
   watch: {
     // 让每次页码发生变化加载新数据
     myCurrentPage(currentPage) {
-      // this.$listeners.currentChange(currentPage);
+      // this.$listeners['current-change'](currentPage);
       this.$emit("current-change", currentPage);
     },
     // 当外面页面发生变化，里面页面也要变化
@@ -127,8 +127,8 @@ export default {
       */
 
       // 1 [2] 3 4 5 6 ...10
-      // 1...3 4 [5] 6 7...10
-      // 1 ... 5 6 7 8 [9] 10
+      // 1...3 4 [5] 6 7...10 正常情况
+      // 1 ... 5 6 7 8 [9] 10  // 1 ... 3 4 5 6 7 8 [9] 10
       // 1 [2] 3
       // [1] --> 如果start大于总页数，不显示
 
@@ -142,6 +142,7 @@ export default {
 
       if (start <= 1) {
         // 1 [2] 3 4 5 6 ...10
+        // [1] 2 3 4 5 6 ...10
         start = 2;
       }
 

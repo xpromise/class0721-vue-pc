@@ -5,7 +5,9 @@ export default {
 	state: {
 		productDetail: {
 			categoryView: {}, // 分类数据
-			skuInfo: {}, // 商品详情数据
+			skuInfo: {
+				skuImageList: [],
+			}, // 商品详情数据
 			spuSaleAttrList: [], // 商品选择属性数据列表
 		},
 	},
