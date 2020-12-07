@@ -25,25 +25,29 @@
             <span class="price">{{ cart.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a
-              href="javascript:void(0)"
-              @click="updateCount(cart.skuId, -1)"
+            <button
+              @click="updateCount(cart.skuId, -1, cart.skuNum)"
               class="mins"
-              >-</a
+              :disabled="cart.skuNum === 1"
             >
+              -
+            </button>
             <input
               autocomplete="off"
               type="text"
               :value="cart.skuNum"
               minnum="1"
               class="itxt"
+              @blur="update(cart.skuId, cart.skuNum, $event)"
+              @input="formatSkuNum"
             />
-            <a
-              href="javascript:void(0)"
-              @click="updateCount(cart.skuId, 1)"
+            <button
+              @click="updateCount(cart.skuId, 1, cart.skuNum)"
               class="plus"
-              >+</a
+              :disabled="cart.skuNum === 10"
             >
+              +
+            </button>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{ cart.skuNum * cart.skuPrice }}</span>
@@ -106,8 +110,47 @@ export default {
   },
   methods: {
     ...mapActions(["getCartList", "updateCartCount"]),
-    // 更新商品数量
+    formatSkuNum(e) {
+      let skuNum = +e.target.value.replace(/\D+/g, "");
+      if (skuNum < 1) {
+        // 商品数量不能小于1
+        skuNum = 1;
+      } else if (skuNum > 10) {
+        // 商品数量不能大于库存
+        skuNum = 10;
+      }
+      e.target.value = skuNum;
+    },
+    update(skuId, skuNum, e) {
+      // 当前商品数量是10 e.target.value 6 --> -4  6 - 10
+      // 当前商品数量是3 e.target.value 6 --> 3
+      // console.log(skuId, skuNum, e.target.value);
+      if (+e.target.value === skuNum) {
+        return;
+      }
+      this.updateCartCount({ skuId, skuNum: e.target.value - skuNum });
+    },
+    /**
+     * 更新商品数量
+     * @params skuId  商品id
+     * @params skuNum 商品增加、减少
+     * @params count  商品数量
+     */
     async updateCount(skuId, skuNum) {
+      // if (count <= 1 && skuNum  === -1) {
+      //   // 删除商品
+      //   if (window.confirm('您是否要删除当前商品吗')) {
+      //     // 删除商品
+      //   }
+
+      //   return;
+      // }
+
+      // // 100 是库存总量
+      // if (count >= 100 && skuNum === 1) {
+      //   alert('超出库存了~')
+      //   return;
+      // }
       // 更新商品
       await this.updateCartCount({ skuId, skuNum });
       // 刷新页面
