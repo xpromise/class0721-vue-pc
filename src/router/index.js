@@ -9,6 +9,10 @@ import Search from "../views/Search";
 import Detail from "../views/Detail";
 import AddCartSuccess from "../views/AddCartSuccess";
 import ShopCart from "../views/ShopCart";
+import Trade from "../views/Trade";
+import Pay from "../views/Pay";
+import PaySuccess from "../views/PaySuccess";
+import Center from "../views/Center";
 
 // 重写push和replace方法
 // 目的：为了让编程式导航重复点击时不报错~
@@ -83,6 +87,30 @@ export default new VueRouter({
 			name: "shopcart",
 			path: "/shopcart",
 			component: ShopCart,
+		},
+		{
+			// 命名路由
+			name: "trade",
+			path: "/trade",
+			component: Trade,
+		},
+		{
+			// 命名路由
+			name: "pay",
+			path: "/pay",
+			component: Pay,
+		},
+		{
+			// 命名路由
+			name: "paysuccess",
+			path: "/paysuccess",
+			component: PaySuccess,
+		},
+		{
+			// 命名路由
+			name: "center",
+			path: "/center/myorder",
+			component: Center,
 		},
 	],
 	// 每次切换路由页面滚动条位置

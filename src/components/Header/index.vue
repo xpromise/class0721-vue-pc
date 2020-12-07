@@ -5,7 +5,12 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="$store.state.user.name">
+            <span>{{ $store.state.user.name }}</span>
+            &nbsp;
+            <button>退出</button>
+          </p>
+          <p v-else>
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <router-link to="/register" class="register">免费注册</router-link>
@@ -129,7 +134,7 @@ export default {
       // if (/^\/search/.test(this.$route.path)) {
       // this.$route.path 路径路由
       // this.$route.name 命名路由名称
-      if (this.$route.name === 'search') {
+      if (this.$route.name === "search") {
         this.$router.replace(location);
       } else {
         this.$router.push(location);
