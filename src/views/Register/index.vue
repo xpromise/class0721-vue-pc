@@ -54,7 +54,7 @@
         <!-- <span class="error-msg">错误提示信息</span> -->
       </div>
       <div class="btn">
-        <button @click="register">完成注册</button>
+        <button @click="submit">完成注册</button>
       </div>
     </div>
 
@@ -77,6 +77,7 @@
 </template>
 
 <script>
+// import { mapActions } from 'vuex'
 import { ValidationProvider, extend } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 /*
@@ -141,24 +142,35 @@ export default {
     };
   },
   methods: {
-    register() {
-      // 1. 收集表单数据
-      const { phone, password, rePassword, code, isAgree } = this.user;
-      // 2. 进行正则校验
-      if (!isAgree) {
-        this.$message("请同意用户协议~");
-        return;
+    async submit() {
+      try {
+        // 1. 收集表单数据
+        const { phone, password, rePassword, code, isAgree } = this.user;
+        // 2. 进行正则校验
+        if (!isAgree) {
+          this.$message.error("请同意用户协议~");
+          return;
+        }
+        if (password !== rePassword) {
+          this.$message.error("两次密码输入不一致！");
+          return;
+        }
+        // 3. 发送请求注册
+        await this.$store.dispatch("register", { phone, password, code });
+        // 4. 注册成功跳转到登录
+        this.$router.push("/login");
+      } catch {
+        // 清空密码
+        this.user.password = "";
+        this.user.rePassword = "";
+        // 刷新验证码
+        this.refresh();
       }
-      if (password !== rePassword) {
-        this.$message("两次密码输入不一致！");
-        return;
-      }
-      console.log(phone, password, rePassword, code, isAgree);
-      // 3. 发送请求注册
     },
     // 刷新验证码
-    refresh(e) {
-      e.target.src = "http://182.92.128.115/api/user/passport/code";
+    refresh() {
+      this.$refs.code.src = "http://182.92.128.115/api/user/passport/code";
+      // e.target.src = "http://182.92.128.115/api/user/passport/code";
     },
   },
   components: {

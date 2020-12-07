@@ -14,23 +14,35 @@
           </ul>
 
           <div class="content">
-            <form action="##">
-              <div class="input-text clearFix">
-                <span></span>
-                <input type="text" placeholder="邮箱/用户名/手机号" />
-              </div>
+            <form @submit.prevent="submit">
+              <ValidationProvider rules="required" v-slot="{ errors }">
+                <div class="input-text clearFix">
+                  <span></span>
+                  <input
+                    type="text"
+                    placeholder="邮箱/用户名/手机号"
+                    v-model="user.phone"
+                  />
+                  <p :style="{ color: 'red' }">{{ errors[0] }}</p>
+                </div>
+              </ValidationProvider>
+
               <div class="input-text clearFix">
                 <span class="pwd"></span>
-                <input type="text" placeholder="请输入密码" />
+                <input
+                  type="text"
+                  placeholder="请输入密码"
+                  v-model="user.password"
+                />
               </div>
               <div class="setting clearFix">
                 <label class="checkbox inline">
-                  <input name="m1" type="checkbox" value="2" checked="" />
+                  <input name="m1" type="checkbox" v-model="isAutoLogin" />
                   自动登录
                 </label>
                 <span class="forget">忘记密码？</span>
               </div>
-              <button class="btn">登&nbsp;&nbsp;录</button>
+              <button class="btn" type="submit">登&nbsp;&nbsp;录</button>
             </form>
 
             <div class="call clearFix">
@@ -67,8 +79,64 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { ValidationProvider, extend } from "vee-validate";
+import { required } from "vee-validate/dist/rules";
+
+extend("required", required);
+
 export default {
   name: "Login",
+  data() {
+    return {
+      user: {
+        phone: "",
+        password: "",
+      },
+      isLogining: false, // 正在登录
+      isAutoLogin: true, // 是否自动登录
+    };
+  },
+  computed: {
+    ...mapState({
+      token: (state) => state.user.token,
+    }),
+  },
+  created() {
+    /*
+      自动登录：
+        在login组件判断是否有token
+        有就认为登录过，跳转到首页
+
+        不够安全：token是可以伪造的
+        解决：拿到token发送请求
+          1. 验证token的合法性（正确，没有过期）
+          2. 请求用户数据
+    */
+    if (this.token) {
+      this.$router.replace("/");
+    }
+  },
+  methods: {
+    async submit() {
+      try {
+        if (this.isLogining) return;
+        this.isLogining = true;
+        const { phone, password } = this.user;
+        await this.$store.dispatch("login", { phone, password });
+        // 登录成功
+        if (this.isAutoLogin) {
+          localStorage.setItem("token", this.token);
+        }
+        this.$router.replace("/");
+      } catch {
+        this.isLogining = false;
+      }
+    },
+  },
+  components: {
+    ValidationProvider,
+  },
 };
 </script>
 
