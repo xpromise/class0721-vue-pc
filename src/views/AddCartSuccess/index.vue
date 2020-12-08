@@ -1,17 +1,17 @@
 <template>
   <div class="cart-complete-wrap">
     <div class="cart-complete">
-      <h3><i class="sui-icon icon-pc-right"></i>商品已成功加入购物车！</h3>
+      <h3>商品已成功加入购物车！</h3>
       <div class="goods">
         <div class="left-good">
           <div class="left-pic">
-            <img src="good.skuDefaultImg" />
+            <img :src="cart.imgUrl" />
           </div>
           <div class="right-info">
             <p class="title">
-              小米红米 Redmi note8 手机 梦幻蓝 全网通(4GB+64GB)
+              {{ cart.skuName }}
             </p>
-            <p class="attr">颜色：WFZ5099IH/5L钛金釜内胆 数量：2</p>
+            <p class="attr">{{ cart.skuDesc }}</p>
           </div>
         </div>
         <div class="right-gocart">
@@ -26,6 +26,29 @@
 <script>
 export default {
   name: "AddCartSuccess",
+  data() {
+    return {
+      cart: JSON.parse(sessionStorage.getItem("cart") || "{}"),
+    };
+  },
+  // 组件路由前置守卫
+  beforeRouteEnter: (to, from, next) => {
+    // 注意：没有this
+    // 从vuex读取数据：1. store 2. 通过next访问this
+
+    next((vm) => {
+      console.log(vm);
+      // 通过 `vm` 访问组件实例
+      // 需求：只有添加了购物车才能进行，没有添加就去购物车页面
+      // console.log(to, from, next);
+      // 1. 从detail过来 2. 有数据
+      if (from.name === "detail" && sessionStorage.getItem("cart")) {
+        return next();
+      }
+
+      next("/shopcart");
+    });
+  },
 };
 </script>
 

@@ -82,6 +82,17 @@ const router = new VueRouter({
 			name: "addcartsuccess",
 			path: "/addcartsuccess",
 			component: AddCartSuccess,
+			// 路由独享守卫
+			// beforeEnter: (to, from, next) => {
+			// 	// 需求：只有添加了购物车才能进行，没有添加就去购物车页面
+			// 	// console.log(to, from, next);
+			// 	// 1. 从detail过来 2. 有数据
+			// 	if (from.name === "detail" && sessionStorage.getItem("cart")) {
+			// 		return next();
+			// 	}
+
+			// 	next("/shopcart");
+			// },
 		},
 		{
 			// 命名路由
@@ -121,6 +132,7 @@ const router = new VueRouter({
 });
 
 /*
+	https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%85%A8%E5%B1%80%E5%89%8D%E7%BD%AE%E5%AE%88%E5%8D%AB
 	路由守卫：
 		1. 是什么
 			在路由跳转之前、之中、之后触发的钩子函数（类似于生命周期）
@@ -133,8 +145,13 @@ const router = new VueRouter({
 				全局后置守卫：之后
 					afterEach
 			路由守卫
+				beforeEnter
 			组件守卫		
-
+				beforeRouteEnter
+				beforeRouteUpdate
+				beforeRouteLeave
+		3. 作用：
+			用来做权限认证（判断当前要跳转的地址，有没有权限可以访问）			
 */
 
 // 需要进行权限验证的地址

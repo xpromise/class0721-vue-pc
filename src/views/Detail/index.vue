@@ -349,7 +349,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 import TypeNav from "@comps/TypeNav";
 import ImageList from "./ImageList/ImageList";
@@ -365,6 +365,9 @@ export default {
   },
   computed: {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
+    ...mapState({
+      cartList: (state) => state.shopcart.cartList,
+    }),
   },
   methods: {
     ...mapActions(["getProductDetail", "updateCartCount"]),
@@ -381,6 +384,8 @@ export default {
           skuId: this.skuInfo.id,
           skuNum: this.skuNum,
         });
+
+        sessionStorage.setItem("cart", JSON.stringify(this.skuInfo));
         // 一旦加入购物车，跳转到加入购物车成功页面
         this.$router.push(`/addcartsuccess?skuNum=${this.skuNum}`);
       } catch (e) {
