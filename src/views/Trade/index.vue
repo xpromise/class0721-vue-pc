@@ -62,6 +62,7 @@
         <textarea
           placeholder="建议留言前先与商家沟通确认"
           class="remarks-cont"
+          v-model="orderComment"
         ></textarea>
       </div>
       <div class="line"></div>
@@ -102,13 +103,13 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <button class="subBtn" @click="submit">提交订单</button>
     </div>
   </div>
 </template>
 
 <script>
-import { reqGetTrade } from "@api/pay";
+import { reqGetTrade, reqSubmitOrder } from "@api/pay";
 
 export default {
   name: "Trade",
@@ -116,6 +117,7 @@ export default {
     return {
       trade: {},
       selectAddressId: -1,
+      orderComment: "",
     };
   },
   computed: {
@@ -128,6 +130,29 @@ export default {
       return userAddressList
         ? userAddressList.find((address) => address.id === selectAddressId)
         : {};
+    },
+  },
+  methods: {
+    async submit() {
+      const { tradeNo, consignee, detailArrayList } = this.trade;
+      const { phoneNum, userAddress } = this.selectAddress;
+      // 提交订单
+      const orderId = await reqSubmitOrder({
+        tradeNo,
+        consignee: consignee,
+        consigneeTel: phoneNum,
+        deliveryAddress: userAddress,
+        paymentWay: "ONLINE",
+        orderComment: this.orderComment,
+        orderDetailList: detailArrayList,
+      });
+
+      this.$router.push({
+        path: "/pay",
+        query: {
+          orderId,
+        },
+      });
     },
   },
   async mounted() {
