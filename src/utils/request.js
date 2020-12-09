@@ -40,7 +40,7 @@ import "nprogress/nprogress.css";
 const userTempId = getUserTempId();
 
 // 通过其值来区分运行环境
-// console.log(process.env.NODE_ENV); // development  production 
+// console.log(process.env.NODE_ENV); // development  production
 const prefix_url =
 	process.env.NODE_ENV === "development" ? "/" : "http://182.92.128.115/";
 

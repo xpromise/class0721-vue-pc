@@ -54,7 +54,8 @@
         <!-- <span class="error-msg">错误提示信息</span> -->
       </div>
       <div class="btn">
-        <button @click="submit">完成注册</button>
+        <!-- @click="submit" 是给组件绑定自定义事件 -->
+        <Button @click="submit">完成注册</Button>
       </div>
     </div>
 
@@ -80,6 +81,7 @@
 // import { mapActions } from 'vuex'
 import { ValidationProvider, extend } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import Button from "@comps/Button";
 /*
   文档：https://vee-validate.logaretm.com/v3/guide/basics.html#validation-provider
   1. 下载 
@@ -143,6 +145,8 @@ export default {
   },
   methods: {
     async submit() {
+      console.log(111);
+
       try {
         // 1. 收集表单数据
         const { phone, password, rePassword, code, isAgree } = this.user;
@@ -157,8 +161,9 @@ export default {
         }
         // 3. 发送请求注册
         await this.$store.dispatch("register", { phone, password, code });
+
         // 4. 注册成功跳转到登录
-        this.$router.push("/login");
+        // this.$router.push("/login");
       } catch {
         // 清空密码
         this.user.password = "";
@@ -175,6 +180,7 @@ export default {
   },
   components: {
     ValidationProvider,
+    Button,
   },
 };
 </script>
