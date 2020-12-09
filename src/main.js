@@ -6,6 +6,7 @@ import router from "./router";
 import store from "./store";
 
 import "./plugins/element.js";
+import "./plugins/lazyload.js";
 
 // 引入mockServer，为了加载里面代码
 // 里面代码一旦加载，就去启动mock服务器，从而拦截相应的请求
@@ -19,12 +20,12 @@ import "swiper/swiper-bundle.min.css";
 Vue.config.productionTip = false;
 
 new Vue({
-  beforeCreate() {
-    // 初始化全局事件总线对象
-    Vue.prototype.$bus = this;
-  },
-  render: (h) => h(App),
-  // 应用router
-  router,
-  store,
+	beforeCreate() {
+		// 初始化全局事件总线对象
+		Vue.prototype.$bus = this;
+	},
+	render: (h) => h(App),
+	// 应用router
+	router,
+	store,
 }).$mount("#app");
